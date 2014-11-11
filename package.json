@@ -1,0 +1,34 @@
+{
+  "name": "npm-travis",
+  "version": "0.0.0",
+  "description": "Trigger travis jobs from npm",
+  "main": "lib/index.js",
+  "bin": {
+    "npm-travis": "npm-travis.js"
+  },
+  "scripts": {
+    "test": "jshint .",
+    "travis": "bin/npm-travis.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cscott/npm-travis.git"
+  },
+  "keywords": [
+    "travis",
+    "npm"
+  ],
+  "author": "C. Scott Ananian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cscott/npm-travis/issues"
+  },
+  "dependencies": {
+    "commander": "~2.5.0",
+    "es6-shim": "~0.20.2",
+    "prfun": "~1.0.2"
+  },
+  "devDependencies": {
+    "jshint": "~2.5.10"
+  }
+}
