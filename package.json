@@ -27,6 +27,7 @@
     "commander": "~2.5.0",
     "es6-shim": "~0.20.2",
     "prfun": "~1.0.2",
+    "pusher-client": "~0.2.2",
     "readable-stream": "1.0.x",
     "request": "~2.47.0"
   },
