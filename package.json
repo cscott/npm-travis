@@ -4,7 +4,7 @@
   "description": "Trigger travis jobs from npm",
   "main": "lib/index.js",
   "bin": {
-    "npm-travis": "npm-travis.js"
+    "npm-travis": "bin/npm-travis.js"
   },
   "scripts": {
     "test": "jshint .",
