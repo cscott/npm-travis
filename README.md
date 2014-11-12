@@ -44,6 +44,22 @@ Each job's exit status will mirror the travis passed/failed status,
 and the jenkins console log will contain the travis log output for
 only the specific job/build configuration.
 
+## Security
+
+Note that running `npm-travis` pushes a branch to the github
+repository for your project, and therefore that task must be given
+write access to the project on github.  Furthermore, if the task is
+triggered on patch submission, anyone with permission to submit
+patches can create a (short-lived) branch on your repository and run
+arbitrary code on a Travis instance.  Be cautious.  You might want to
+point `npm-travis` at a fork or mirror of your github repository.
+
+In addition, Travis "secure variables" are normally
+[disabled for cross-origin pull requests](http://blog.travis-ci.com/2013-06-10-secure-env-in-pull-requests/);
+but since `npm-travis` uses same-origin branches rather than pull
+requests, it is not safe to use Travis "secure variables" in
+repositories using `npm-travis`.
+
 ## License
 
 MIT license; see [LICENSE](./LICENSE).
