@@ -1,6 +1,6 @@
 {
   "name": "npm-travis",
-  "version": "0.0.1-git",
+  "version": "1.0.0",
   "description": "Trigger travis jobs from npm",
   "main": "lib/index.js",
   "bin": {
