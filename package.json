@@ -29,7 +29,7 @@
     "prfun": "~1.0.2",
     "pusher-client": "~0.2.2",
     "readable-stream": "1.0.x",
-    "request": "~2.47.0"
+    "request": "~2.48.0"
   },
   "devDependencies": {
     "jshint": "~2.5.10"
