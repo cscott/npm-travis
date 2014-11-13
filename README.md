@@ -7,6 +7,25 @@ This tool allows integrating [Travis] test runs with npm-based
 workflows.  The original use case was triggering [Travis] builds
 from [Jenkins] in Wikimedia's [Gerrit] code review tool.
 
+The basic idea is that the `npm-travis` binary will push a throwaway
+branch to [github] containing the current git HEAD (which is under
+review and has not yet been merged). It then uses the [Travis API]
+to monitor the build triggered by this push, stream the logs as
+they appear (for real-time progress feedback), and then exit with
+an error code corresponding to the passed/failed status of the
+travis build (after deleting the temporary branch).
+
+In WMF's actual use, we push to [Gerrit]'s repository, which then gets
+mirrored to github.  (You can specify the `--remote` option to the
+CLI to specify a particular push target.)  This adds a little bit
+of latency, but it prevents our Gerrit-to-github synchronization job
+from attempting to "sync" and remove our temporary branch while we're
+in the middle of using it.  This also allows us to use [Gerrit]'s
+access controls to give `npm-travis` the ability to push only to
+branches prefixed with `npm-travis/`.  (However, this feature
+is currently turned off because of
+https://github.com/travis-ci/travis-api/issues/145 .)
+
 ## Suggested use
 ```
 $ cd my-node-tool
@@ -21,13 +40,17 @@ Then add the following to the `package.json` of *my-node-tool*:
 
 Add a job to trigger `npm run travis` to verify a submitted patch (for
 example, using [Jenkins Job Builder]/[Zuul]).  The exit status of this
-job will mirror the travis build status, and the console log will
-contain the console output of all travis jobs (build configurations)
+job will mirror the Travis build status, and the console log will
+contain the console output of all Travis jobs (build configurations)
 associated with this build.
+
+**For non-node.js projects**, you can install the npm-travis tool globally
+(`npm install -g npm-travis`) and just invoke the `npm-travis` binary
+directly in the Jenkins job (rather than using `npm run`).
 
 ## Advanced use
 
-If you would like to have a separate jenkins job for every travis
+If you would like to have a separate Jenkins job for every Travis
 build configuration, use the `--job` option:
 ```
   "scripts": {
@@ -36,13 +59,45 @@ build configuration, use the `--job` option:
     /* etc */
   }
 ```
-If travis triggers *N* jobs per build (for example, `7.1`, `7.2`, ... `7.N`)
+If Travis triggers *N* jobs per build (for example, `7.1`, `7.2`, ... `7.N`)
 then there should be *N* scripts here.
 
 Jenkins should then trigger `npm run travis-1`...`npm run travis-N`.
-Each job's exit status will mirror the travis passed/failed status,
-and the jenkins console log will contain the travis log output for
+Each job's exit status will mirror the Travis passed/failed status,
+and the Jenkins console log will contain the Travis log output for
 only the specific job/build configuration.
+
+## Configuration
+
+The `npm-travis` tool needs two pieces of information: the name of
+the [github] repository which is triggering the Travis build, and
+a git remote which it can push to.  The name of the git remote
+(referred to as `<remote>` below) is given by the `--remote`
+command-line option, defaulting to `github`.  It then attempts to
+discover the github repository name as follows:
+
+1. If there is a repository name given on the command line, use that.
+2. Otherwise, use `git remote show <remote>` to look at the push URL.
+If the push URL looks like a github url, extract the repository name from it.
+3. Otherwise, use `git remote show origin` and see if its push URL
+looks like a github URL, extracting a repository name if so.
+4. Otherwise, look in `package.json` in the current working directory, and see
+if its `repository` field looks like a github URL, and extract a
+repository name.
+5. Fail.
+
+It then checks whether the git remote `<remote>` exists, and if it
+does not it will create it using:
+```
+git remote add <remote> git@github.com:<repository name>
+```
+
+In the common case where you've cloned the code from github, this just
+works.  For WMF's setup, we want to push to [Gerrit], but the Gerrit
+push URL doesn't map in a simple way to the [github] repository name.
+So we create a git remote named `gerrit` ahead of time, and then
+invoke `npm-travis --remote gerrit <repository name>`, explicitly
+giving the github repository name on the command line.
 
 ## Security
 
@@ -66,7 +121,9 @@ MIT license; see [LICENSE](./LICENSE).
 
 (c) 2014 by C. Scott Ananian
 
+[github]:  https://github.com
 [Travis]:  https://travis-ci.org/
+[Travis API]: http://docs.travis-ci.com/api/
 [Jenkins]: https://www.mediawiki.org/wiki/Continuous_integration/Jenkins
 [Gerrit]:  https://www.mediawiki.org/wiki/Gerrit
 [Jenkins Job Builder]: https://www.mediawiki.org/wiki/Continuous_integration/Jenkins_job_builder
