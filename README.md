@@ -22,9 +22,7 @@ of latency, but it prevents our Gerrit-to-github synchronization job
 from attempting to "sync" and remove our temporary branch while we're
 in the middle of using it.  This also allows us to use [Gerrit]'s
 access controls to give `npm-travis` the ability to push only to
-branches prefixed with `npm-travis/`.  (However, this feature
-is currently turned off because of
-https://github.com/travis-ci/travis-api/issues/145 .)
+branches prefixed with `npm-travis/`.
 
 ## Suggested use
 ```
