@@ -3,7 +3,6 @@
 		"setImmediate",
 
 		"Map",
-		"Promise",
 		"Set"
 	],
 
