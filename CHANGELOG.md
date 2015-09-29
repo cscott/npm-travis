@@ -1,3 +1,5 @@
+# npm-travis x.x.x (not yet released)
+
 # npm-travis 1.0.1 (2015-09-29)
 * Switch back to using slashes in branch names, since upstream bug
   https://github.com/travis-ci/travis-api/issues/145 has been fixed.
