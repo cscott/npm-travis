@@ -29,15 +29,16 @@
     "url": "https://github.com/cscott/npm-travis/issues"
   },
   "dependencies": {
-    "commander": "~2.8.1",
-    "core-js": "~1.2.0",
-    "prfun": "~2.1.1",
-    "pusher-client": "~0.2.3",
-    "readable-stream": "~1.0.33",
-    "request": "~2.64.0"
+    "babybird": "^0.0.1",
+    "commander": "^2.9.0",
+    "core-js": "^2.3.0",
+    "prfun": "^2.1.4",
+    "pusher-client": "^1.1.0",
+    "readable-stream": "^1.0.33",
+    "request": "^2.72.0"
   },
   "devDependencies": {
-    "jscs": "~2.2.1",
-    "jshint": "~2.8.0"
+    "jscs": "^2.11.0",
+    "jshint": "^2.9.2"
   }
 }

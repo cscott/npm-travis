@@ -1,4 +1,5 @@
 # npm-travis x.x.x (not yet released)
+* Update npm dependencies; switch to `babybird` Promise implementation.
 
 # npm-travis 1.0.1 (2015-09-29)
 * Switch back to using slashes in branch names, since upstream bug
