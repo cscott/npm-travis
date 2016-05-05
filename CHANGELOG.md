@@ -1,3 +1,5 @@
+# npm-travis x.x.x (not yet released)
+
 # npm-travis 1.0.2 (2016-05-05)
 * Update npm dependencies; switch to `babybird` Promise implementation.
 * Workaround bug in travis' public API to fix streaming. (#1)
